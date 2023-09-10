@@ -15,7 +15,6 @@ import { studentRoutes } from '../modules/student/student.routes';
 const router = express.Router();
 
 const moduleRoutes = [
-  // ... routes
   {
     path: "/academic-semesters",
     route: AcademicSemeterRoutes

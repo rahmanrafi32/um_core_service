@@ -1,31 +1,35 @@
-import { OfferedCourseClassSchedule, Prisma } from "@prisma/client";
-import { paginationHelpers } from "../../../helpers/paginationHelper";
-import { IGenericResponse } from "../../../interfaces/common";
-import { IPaginationOptions } from "../../../interfaces/pagination";
-import prisma from "../../../shared/prisma";
-import { offeredCourseClassScheduleRelationalFields, offeredCourseClassScheduleRelationalFieldsMapper, offeredCourseClassScheduleSearchableFields } from "./offeredCourseClassSchedule.constants";
-import { IOfferedCourseClassScheduleFilterRequiest } from "./offeredCourseClassSchedule.interface";
-import { OfferedCourseClassScheduleUtils } from "./offeredCourseClassSchedule.utils";
+import { OfferedCourseClassSchedule, Prisma } from '@prisma/client';
+import { paginationHelpers } from '../../../helpers/paginationHelper';
+import { IGenericResponse } from '../../../interfaces/common';
+import { IPaginationOptions } from '../../../interfaces/pagination';
+import prisma from '../../../shared/prisma';
+import {
+  offeredCourseClassScheduleRelationalFields,
+  offeredCourseClassScheduleRelationalFieldsMapper,
+  offeredCourseClassScheduleSearchableFields,
+} from './offeredCourseClassSchedule.constants';
+import { IOfferedCourseClassScheduleFilterRequiest } from './offeredCourseClassSchedule.interface';
+import { OfferedCourseClassScheduleUtils } from './offeredCourseClassSchedule.utils';
 
-const insertIntoDB = async (data: OfferedCourseClassSchedule): Promise<OfferedCourseClassSchedule> => {
-    await OfferedCourseClassScheduleUtils.checkRoomAvailable(data)
-    await OfferedCourseClassScheduleUtils.checkFacultyAvailable(data)
+const insertIntoDB = async (
+  data: OfferedCourseClassSchedule
+): Promise<OfferedCourseClassSchedule> => {
+  await OfferedCourseClassScheduleUtils.checkRoomAvailable(data);
+  await OfferedCourseClassScheduleUtils.checkFacultyAvailable(data);
 
-    // existing: 12:30 - 13:30
-    // new slot: 12:50 - 13:50
+  // existing: 12:30 - 13:30
+  // new slot: 12:50 - 13:50
 
-    const result = await prisma.offeredCourseClassSchedule.create({
-        data,
-        include: {
-            semesterRegistration: true,
-            offeredCourseSection: true,
-            room: true,
-            faculty: true
-        }
-    })
-
-    return result;
-}
+  return prisma.offeredCourseClassSchedule.create({
+    data,
+    include: {
+      semesterRegistration: true,
+      offeredCourseSection: true,
+      room: true,
+      faculty: true,
+    },
+  });
+};
 
 const getAllFromDB = async (
     filters: IOfferedCourseClassScheduleFilterRequiest,

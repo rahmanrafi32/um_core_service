@@ -5,7 +5,11 @@ import { paginationHelpers } from "../../../helpers/paginationHelper";
 import { IGenericResponse } from "../../../interfaces/common";
 import { IPaginationOptions } from "../../../interfaces/pagination";
 import prisma from "../../../shared/prisma";
-import { offeredCourseSectionRelationalFields, offeredCourseSectionRelationalFieldsMapper, offeredCourseSectionSearchableFields } from "./offeredCourseSection.constants";
+import {
+    offeredCourseSectionRelationalFields,
+    offeredCourseSectionRelationalFieldsMapper,
+    offeredCourseSectionSearchableFields
+} from "./offeredCourseSection.constants";
 import { IOfferedCourseSectionFilterRequest } from "./offeredCourseSection.interface";
 
 const insertIntoDB = async (data: any): Promise<OfferedCourseSection> => {
@@ -16,8 +20,6 @@ const insertIntoDB = async (data: any): Promise<OfferedCourseSection> => {
         }
     })
 
-    console.log(isExistOfferedCourse)
-    console.log("data: ", data)
 
     if (!isExistOfferedCourse) {
         throw new ApiError(httpStatus.BAD_REQUEST, "Offered Course does not exist!")
@@ -25,11 +27,9 @@ const insertIntoDB = async (data: any): Promise<OfferedCourseSection> => {
 
     data.semesterRegistrationId = isExistOfferedCourse.semesterRegistrationId;
 
-    const result = await prisma.offeredCourseSection.create({
+    return prisma.offeredCourseSection.create({
         data
-    })
-
-    return result;
+    });
 }
 
 const getAllFromDB = async (
@@ -127,7 +127,7 @@ const updateOneInDB = async (
     id: string,
     payload: Partial<OfferedCourseSection>
 ): Promise<OfferedCourseSection> => {
-    //update 
+    //update
     const result = await prisma.offeredCourseSection.update({
         where: {
             id
